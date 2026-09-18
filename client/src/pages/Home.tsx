@@ -1,25 +1,329 @@
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Camera,
+  Check,
+  ChevronRight,
+  Clapperboard,
+  Download,
+  ExternalLink,
+  Film,
+  Instagram,
+  Mail,
+  MapPin,
+  Menu,
+  MessageCircle,
+  Moon,
+  Palette,
+  Phone,
+  Play,
+  Plus,
+  Scissors,
+  Sparkles,
+  Sun,
+  X,
+  Youtube,
+} from "lucide-react";
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
- */
-export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
+type Project = {
+  id: string;
+  title: string;
+  category: string;
+  year: string;
+  description: string;
+  image: string;
+  videoUrl: string;
+};
+
+const starterProjects: Project[] = [
+  {
+    id: "sonabel",
+    title: "Sonabel",
+    category: "Film institutionnel",
+    year: "Sélection",
+    description: "Une image précise et humaine au service d’une marque nationale.",
+    image:
+      "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=82",
+    videoUrl: "#",
+  },
+  {
+    id: "espaco",
+    title: "Espaco 2023",
+    category: "Captation live",
+    year: "2023",
+    description: "L’énergie d’une scène, le rythme d’un public, la mémoire d’un moment.",
+    image:
+      "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1200&q=82",
+    videoUrl: "#",
+  },
+  {
+    id: "resilience",
+    title: "Territoire de résilience",
+    category: "Documentaire",
+    year: "Sélection",
+    description: "Des regards vrais, captés au plus près du terrain.",
+    image:
+      "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=1200&q=82",
+    videoUrl: "#",
+  },
+  {
+    id: "sommet",
+    title: "Sommet des jeunes",
+    category: "Film événementiel",
+    year: "Sélection",
+    description: "Un montage vivant pour donner de l’élan aux idées qui rassemblent.",
+    image:
+      "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1200&q=82",
+    videoUrl: "#",
+  },
+  {
+    id: "sidiki",
+    title: "Sidiki Diabaté",
+    category: "Clip officiel",
+    year: "Sélection",
+    description: "Une présence, une lumière, une narration musicale assumée.",
+    image:
+      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=82",
+    videoUrl: "#",
+  },
+];
+
+const navItems = [
+  ["Accueil", "accueil"],
+  ["Réalisations", "realisations"],
+  ["Parcours", "parcours"],
+  ["Compétences", "competences"],
+  ["Contact", "contact"],
+];
+
+function LogoMark({ compact = false }: { compact?: boolean }) {
+  return (
+    <a href="#accueil" className={`brand-mark ${compact ? "brand-mark--compact" : ""}`} aria-label="JK Prod - Accueil">
+      <span className="brand-monogram">JK</span>
+      <span className="brand-wordmark">PROD <small>JEFFERSON KONE</small></span>
+    </a>
+  );
+}
+
+function SectionEyebrow({ children }: { children: string }) {
+  return <p className="section-eyebrow"><span />{children}</p>;
+}
+
+function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [lightMode, setLightMode] = useState(false);
+  const [studioOpen, setStudioOpen] = useState(false);
+  const [projects, setProjects] = useState<Project[]>(starterProjects);
+  const [newProject, setNewProject] = useState({
+    title: "",
+    category: "Film / vidéo",
+    year: "2026",
+    description: "",
+    image: "",
+    videoUrl: "",
+  });
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("jkprod-projects");
+    if (saved) {
+      try {
+        setProjects(JSON.parse(saved));
+      } catch {
+        window.localStorage.removeItem("jkprod-projects");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("jkprod-projects", JSON.stringify(projects));
+  }, [projects]);
+
+  const featuredProjects = useMemo(() => projects.slice(0, 5), [projects]);
+
+  function scrollTo(id: string) {
+    setMenuOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function handleProjectSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!newProject.title.trim()) return;
+    const project: Project = {
+      id: `${Date.now()}`,
+      title: newProject.title.trim(),
+      category: newProject.category.trim() || "Film / vidéo",
+      year: newProject.year.trim() || "2026",
+      description: newProject.description.trim() || "Projet signé JK Prod.",
+      image:
+        newProject.image.trim() ||
+        "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?auto=format&fit=crop&w=1200&q=82",
+      videoUrl: newProject.videoUrl.trim() || "#",
+    };
+    setProjects((current) => [project, ...current]);
+    setNewProject({ title: "", category: "Film / vidéo", year: "2026", description: "", image: "", videoUrl: "" });
+  }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={`site-shell ${lightMode ? "theme-light" : ""}`}>
+      <header className="site-header">
+        <div className="header-inner">
+          <LogoMark />
+          <nav className={`main-nav ${menuOpen ? "is-open" : ""}`} aria-label="Navigation principale">
+            {navItems.map(([label, id], index) => (
+              <button key={id} className={index === 0 ? "is-active" : ""} onClick={() => scrollTo(id)}>
+                <span>0{index + 1}</span>{label}
+              </button>
+            ))}
+          </nav>
+          <div className="header-actions">
+            <button className="icon-button" onClick={() => setLightMode((value) => !value)} aria-label="Changer de thème">
+              {lightMode ? <Moon size={17} /> : <Sun size={17} />}
+            </button>
+            <button className="studio-trigger" onClick={() => setStudioOpen(true)}><Plus size={15} /> Studio JK</button>
+            <button className="mobile-menu" onClick={() => setMenuOpen((value) => !value)} aria-label="Ouvrir le menu">
+              {menuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
+        </div>
+      </header>
+
       <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
+        <section className="hero-section" id="accueil">
+          <div className="hero-grid" />
+          <div className="hero-orb hero-orb--one" />
+          <div className="hero-orb hero-orb--two" />
+          <div className="container hero-content">
+            <div className="hero-copy reveal-up">
+              <p className="hero-kicker"><span className="pulse-dot" /> Cadreur · Monteur · Vidéaste</p>
+              <h1>Je capte<br /><em>l’essentiel.</em><br />Je raconte<br /><em>vos histoires.</em></h1>
+              <p className="hero-description">Une image forte. Un montage précis.<br />Au service de vos projets audiovisuels.</p>
+              <div className="hero-actions">
+                <button className="primary-button" onClick={() => scrollTo("realisations")}><Play size={16} fill="currentColor" /> Voir les réalisations</button>
+                <button className="text-link" onClick={() => scrollTo("contact")}>Parlons de votre projet <ArrowUpRight size={16} /></button>
+              </div>
+            </div>
+            <div className="hero-visual reveal-in">
+              <div className="camera-frame">
+                <div className="camera-lens" />
+                <div className="camera-body"><span>RED</span><small>V-RAPTOR</small></div>
+                <div className="camera-handle" />
+                <div className="camera-matte" />
+              </div>
+              <div className="hero-image-placeholder">
+                <span className="vertical-label">OUAGADOUGOU / BURKINA FASO</span>
+                <div className="frame-glow" />
+              </div>
+              <div className="hero-side-note"><span>01</span><i /> Une autre<br />façon de voir.</div>
+            </div>
+          </div>
+          <div className="hero-bottom container">
+            <span>Scroll pour découvrir</span><ArrowDownRight size={18} />
+            <div className="hero-signature">JK<span>PROD</span></div>
+          </div>
+        </section>
+
+        <section className="work-section section-pad" id="realisations">
+          <div className="container">
+            <div className="section-heading split-heading">
+              <div><SectionEyebrow>01 / Réalisations</SectionEyebrow><h2>Une sélection<br /><em>de réalisations.</em></h2></div>
+              <div className="heading-aside"><p>Des images qui servent<br />une intention. Chaque plan,<br />chaque coupe compte.</p><button className="circle-arrow" onClick={() => setStudioOpen(true)}><Plus size={18} /></button></div>
+            </div>
+            <div className="project-grid">
+              {featuredProjects.map((project, index) => (
+                <article className={`project-card project-card--${index + 1}`} key={project.id}>
+                  <div className="project-image-wrap">
+                    <img src={project.image} alt={`Image du projet ${project.title}`} loading="lazy" />
+                    <div className="project-overlay" />
+                    <span className="project-index">0{index + 1}</span>
+                    {project.videoUrl && project.videoUrl !== "#" ? <a className="play-button" href={project.videoUrl} target="_blank" rel="noreferrer" aria-label={`Voir ${project.title}`}><Play size={15} fill="currentColor" /></a> : <span className="play-button play-button--muted"><Play size={15} fill="currentColor" /></span>}
+                    <div className="project-caption"><span>{project.category}</span><h3>{project.title}</h3><small>{project.year}</small></div>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div className="section-footer"><span>{projects.length} projets affichés</span><button className="outline-button" onClick={() => setStudioOpen(true)}>Ajouter une réalisation <Plus size={16} /></button></div>
+          </div>
+        </section>
+
+        <section className="statement-section">
+          <div className="container statement-inner">
+            <div className="statement-number">02</div>
+            <div className="statement-copy"><SectionEyebrow>La signature JK Prod</SectionEyebrow><p>Je ne filme pas seulement ce qui se passe.<br /><strong>Je cherche ce que ça fait ressentir.</strong></p></div>
+            <Clapperboard className="statement-icon" size={48} strokeWidth={1} />
+          </div>
+        </section>
+
+        <section className="journey-section section-pad" id="parcours">
+          <div className="container journey-grid">
+            <div className="portrait-panel">
+              <div className="portrait-placeholder"><span>JK</span><small>JEFFERSON<br />KONE</small></div>
+              <div className="portrait-caption"><span>Cadreur — Monteur</span><strong>Jefferson KONE</strong></div>
+            </div>
+            <div className="journey-copy">
+              <SectionEyebrow>03 / Parcours</SectionEyebrow>
+              <h2>Expérience.<br /><em>Engagement.</em><br />Exigence.</h2>
+              <p className="lead-copy">Passionné par l’image depuis plusieurs années, j’ai choisi d’en faire mon métier. Mon parcours se construit au fil des tournages, avec le même objectif : donner du sens à chaque image.</p>
+              <div className="timeline">
+                <div className="timeline-item"><span>01</span><div><strong>Showtools Experience Burkina</strong><small>Assistant cadreur — monteur</small></div><time>Expérience</time></div>
+                <div className="timeline-item"><span>02</span><div><strong>We Are Group</strong><small>Assistant cadreur — monteur</small></div><time>Expérience</time></div>
+                <div className="timeline-item timeline-item--active"><span>03</span><div><strong>Freelance / JK Prod</strong><small>Cadreur — monteur indépendant</small></div><time>Aujourd’hui</time></div>
+              </div>
+              <button className="outline-button" onClick={() => window.alert("Le CV PDF sera ajouté dès que le contenu final sera validé.")}><Download size={16} /> Télécharger mon CV</button>
+            </div>
+          </div>
+        </section>
+
+        <section className="skills-section section-pad" id="competences">
+          <div className="container">
+            <div className="section-heading split-heading"><div><SectionEyebrow>04 / Outils & savoir-faire</SectionEyebrow><h2>Le regard,<br /><em>la maîtrise.</em></h2></div><p className="heading-note">Du premier repérage<br />à la dernière exportation.</p></div>
+            <div className="skills-layout">
+              <div className="skill-list">
+                {[['Cadrage & composition', Camera], ['Montage vidéo', Scissors], ['Étalonnage', Palette], ['Prise de son', MessageCircle], ['Direction artistique', Sparkles]].map(([label, Icon], index) => {
+                  const IconComponent = Icon as typeof Camera;
+                  return <div className="skill-row" key={label as string}><IconComponent size={17} /><span>{label as string}</span><div className="skill-line"><i style={{ width: `${86 - index * 7}%` }} /></div><b>{86 - index * 7}%</b></div>;
+                })}
+              </div>
+              <div className="tool-stack"><p>Outils de travail</p><div className="tool-cards"><span>Pr</span><span>Ae</span><span>Ps</span><span>DaV</span><span>LR</span></div><div className="gear-note"><Film size={19} /><span>Une chaîne de production légère,<br />pensée pour raconter juste.</span></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section className="numbers-section"><div className="container numbers-grid"><div><strong>+</strong><span>projets réalisés</span></div><div><strong>3</strong><span>expériences fortes</span></div><div><strong>100%</strong><span>engagement</span></div><div><strong>BF</strong><span>basé à Ouagadougou</span></div></div></section>
+
+        <section className="contact-section section-pad" id="contact">
+          <div className="container contact-grid">
+            <div className="contact-copy"><SectionEyebrow>05 / Contact</SectionEyebrow><h2>Un projet<br /><em>en tête ?</em></h2><p>Parlons de votre idée, de votre événement ou de votre prochaine histoire à raconter.</p><div className="contact-location"><MapPin size={17} /><span>Ouagadougou, Burkina Faso<br /><small>Disponible pour des projets locaux et à distance.</small></span></div></div>
+            <div className="contact-cards">
+              <a href="https://wa.me/2260425060" className="contact-card" target="_blank" rel="noreferrer"><MessageCircle size={20} /><span>WhatsApp</span><strong>+226 42 50 60</strong><ArrowUpRight size={16} /></a>
+              <a href="tel:+2267594660" className="contact-card"><Phone size={20} /><span>Téléphone</span><strong>+226 75 94 66 0</strong><ArrowUpRight size={16} /></a>
+              <a href="mailto:jkprod226@gmail.com" className="contact-card"><Mail size={20} /><span>Email</span><strong>jkprod226@gmail.com</strong><ArrowUpRight size={16} /></a>
+              <a href="https://www.tiktok.com/@jk_prod1" className="contact-card" target="_blank" rel="noreferrer"><span className="social-letter">Tk</span><span>TikTok</span><strong>@jk_prod1</strong><ArrowUpRight size={16} /></a>
+            </div>
+          </div>
+          <div className="container contact-footer"><LogoMark compact /><div className="social-links"><a href="https://www.tiktok.com/@jk_prod1" target="_blank" rel="noreferrer">TikTok</a><a href="https://www.facebook.com/share/1cW8BnfyB3/" target="_blank" rel="noreferrer">Facebook</a><a href="mailto:jkprod226@gmail.com">Email</a></div><span className="copyright">© 2026 JK Prod — Jefferson KONE</span></div>
+        </section>
       </main>
+
+      {studioOpen && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label="Studio JK">
+        <div className="studio-panel">
+          <button className="studio-close" onClick={() => setStudioOpen(false)} aria-label="Fermer"><X size={20} /></button>
+          <SectionEyebrow>Studio JK / Gestion locale</SectionEyebrow>
+          <h2>Ajouter une <em>réalisation.</em></h2>
+          <p className="studio-intro">Ajoutez un projet sans toucher au code. Les informations sont enregistrées dans ce navigateur uniquement, en attendant une version connectée.</p>
+          <form onSubmit={handleProjectSubmit} className="studio-form">
+            <label>Nom du projet<input required value={newProject.title} onChange={(event) => setNewProject({ ...newProject, title: event.target.value })} placeholder="Ex. Film institutionnel" /></label>
+            <div className="form-row"><label>Catégorie<input value={newProject.category} onChange={(event) => setNewProject({ ...newProject, category: event.target.value })} placeholder="Documentaire" /></label><label>Année<input value={newProject.year} onChange={(event) => setNewProject({ ...newProject, year: event.target.value })} placeholder="2026" /></label></div>
+            <label>Description<textarea value={newProject.description} onChange={(event) => setNewProject({ ...newProject, description: event.target.value })} placeholder="Une phrase sur le projet" rows={3} /></label>
+            <label>URL de la miniature <small>Optionnel — image hébergée</small><input value={newProject.image} onChange={(event) => setNewProject({ ...newProject, image: event.target.value })} placeholder="https://..." /></label>
+            <label>Lien vidéo <small>YouTube, Vimeo ou autre</small><input value={newProject.videoUrl} onChange={(event) => setNewProject({ ...newProject, videoUrl: event.target.value })} placeholder="https://youtube.com/..." /></label>
+            <button className="primary-button" type="submit"><Check size={16} /> Enregistrer le projet</button>
+          </form>
+          <div className="studio-note"><ExternalLink size={15} /><span>Pour publier une vidéo locale, mettez-la d’abord sur YouTube ou Vimeo, puis collez son lien ici. Cela évite de ralentir votre site.</span></div>
+        </div>
+      </div>}
     </div>
   );
 }
+
+export default Home;

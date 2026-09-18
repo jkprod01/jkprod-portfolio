@@ -289,7 +289,7 @@ function Home() {
           </div>
         </section>
 
-        <section className="numbers-section"><div className="container numbers-grid"><div><strong>+</strong><span>projets réalisés</span></div><div><strong>3</strong><span>expériences fortes</span></div><div><strong>100%</strong><span>engagement</span></div><div><strong>BF</strong><span>basé à Ouagadougou</span></div></div></section>
+        <section className="numbers-section"><div className="container numbers-grid"><div><strong>PLUSIEURS</strong><span>projets réalisés</span></div><div><strong>3</strong><span>expériences fortes</span></div><div><strong>100%</strong><span>engagement</span></div><div><strong>BF</strong><span>basé à Ouagadougou</span></div></div></section>
 
         <section className="contact-section section-pad" id="contact">
           <div className="container contact-grid">

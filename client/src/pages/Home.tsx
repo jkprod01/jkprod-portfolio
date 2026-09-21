@@ -36,6 +36,14 @@ type Project = {
   videoUrl: string;
 };
 
+const projectRoles: Record<string, string> = {
+  "Film institutionnel": "Cadrage · Montage · Étalonnage",
+  "Captation live": "Cadre multicaméra · Montage événementiel",
+  Documentaire: "Image · Montage · Narration visuelle",
+  "Film événementiel": "Cadrage · Montage · Direction du rythme",
+  "Clip officiel": "Cadrage · Montage · Traitement de l’image",
+};
+
 const starterProjects: Project[] = [
   {
     id: "sonabel",
@@ -114,6 +122,8 @@ function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [lightMode, setLightMode] = useState(false);
   const [studioOpen, setStudioOpen] = useState(false);
+  const [showreelOpen, setShowreelOpen] = useState(false);
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [projects, setProjects] = useState<Project[]>(starterProjects);
   const [newProject, setNewProject] = useState({
     title: "",
@@ -199,8 +209,8 @@ function Home() {
               <h1>Je capte<br /><em>l’essentiel.</em><br />Je raconte<br /><em>vos histoires.</em></h1>
               <p className="hero-description">Une image forte. Un montage précis.<br />Au service de vos projets audiovisuels.</p>
               <div className="hero-actions">
-                <button className="primary-button" onClick={() => scrollTo("realisations")}><Play size={16} fill="currentColor" /> Voir les réalisations</button>
-                <button className="text-link" onClick={() => scrollTo("contact")}>Parlons de votre projet <ArrowUpRight size={16} /></button>
+                <button className="primary-button" onClick={() => setShowreelOpen(true)}><Play size={16} fill="currentColor" /> Voir le showreel</button>
+                <button className="text-link" onClick={() => scrollTo("realisations")}>Explorer les réalisations <ArrowUpRight size={16} /></button>
               </div>
             </div>
             <div className="hero-visual reveal-in">
@@ -215,6 +225,7 @@ function Home() {
                 <div className="frame-glow" />
               </div>
               <div className="hero-side-note"><span>01</span><i /> Une autre<br />façon de voir.</div>
+              <button className="hero-reel-card" onClick={() => setShowreelOpen(true)}><span className="reel-card-icon"><Play size={13} fill="currentColor" /></span><span><small>Showreel / 2026</small><strong>Le regard JK Prod</strong></span><ArrowUpRight size={15} /></button>
             </div>
           </div>
           <div className="hero-bottom container">
@@ -237,7 +248,7 @@ function Home() {
                     <div className="project-overlay" />
                     <span className="project-index">0{index + 1}</span>
                     {project.videoUrl && project.videoUrl !== "#" ? <a className="play-button" href={project.videoUrl} target="_blank" rel="noreferrer" aria-label={`Voir ${project.title}`}><Play size={15} fill="currentColor" /></a> : <span className="play-button play-button--muted"><Play size={15} fill="currentColor" /></span>}
-                    <div className="project-caption"><span>{project.category}</span><h3>{project.title}</h3><small>{project.year}</small></div>
+                    <button className="project-caption" onClick={() => setActiveProject(project)}><span>{project.category}</span><h3>{project.title}</h3><small>{project.year} · Découvrir le projet <ChevronRight size={12} /></small></button>
                   </div>
                 </article>
               ))}
@@ -254,6 +265,13 @@ function Home() {
           </div>
         </section>
 
+        <section className="about-section section-pad" id="a-propos">
+          <div className="container about-grid">
+            <div className="about-label"><SectionEyebrow>03 / À propos</SectionEyebrow><span className="about-stamp">JK<br /><small>PROD</small></span></div>
+            <div className="about-content"><h2>L’image comme<br /><em>langage.</em></h2><p className="about-lead">Je m’appelle <strong>Jefferson KONE</strong>, cadreur-monteur et vidéaste basé à Ouagadougou, au Burkina Faso.</p><p>Passionné par l’image et la narration audiovisuelle, je transforme les idées, les événements et les histoires en contenus visuels vivants, précis et mémorables.</p><p>Mon expérience chez Showtools Experience Burkina et We Are Group m’a permis de participer à des films institutionnels, des captations d’événements, des documentaires, des clips et des contenus de communication.</p><blockquote>Une image forte.<br /><strong>Un montage précis. Une histoire qui reste.</strong></blockquote><button className="text-link" onClick={() => scrollTo("contact")}>Travaillons ensemble <ArrowUpRight size={16} /></button></div>
+          </div>
+        </section>
+
         <section className="journey-section section-pad" id="parcours">
           <div className="container journey-grid">
             <div className="portrait-panel">
@@ -261,7 +279,7 @@ function Home() {
               <div className="portrait-caption"><span>Cadreur — Monteur</span><strong>Jefferson KONE</strong></div>
             </div>
             <div className="journey-copy">
-              <SectionEyebrow>03 / Parcours</SectionEyebrow>
+              <SectionEyebrow>04 / Parcours</SectionEyebrow>
               <h2>Expérience.<br /><em>Engagement.</em><br />Exigence.</h2>
               <p className="lead-copy">Passionné par l’image depuis plusieurs années, j’ai choisi d’en faire mon métier. Mon parcours se construit au fil des tournages, avec le même objectif : donner du sens à chaque image.</p>
               <div className="timeline">
@@ -276,7 +294,7 @@ function Home() {
 
         <section className="skills-section section-pad" id="competences">
           <div className="container">
-            <div className="section-heading split-heading"><div><SectionEyebrow>04 / Outils & savoir-faire</SectionEyebrow><h2>Le regard,<br /><em>la maîtrise.</em></h2></div><p className="heading-note">Du premier repérage<br />à la dernière exportation.</p></div>
+            <div className="section-heading split-heading"><div><SectionEyebrow>05 / Outils & savoir-faire</SectionEyebrow><h2>Le regard,<br /><em>la maîtrise.</em></h2></div><p className="heading-note">Du premier repérage<br />à la dernière exportation.</p></div>
             <div className="skills-layout">
               <div className="skill-list">
                 {[['Cadrage & composition', Camera], ['Montage vidéo', Scissors], ['Étalonnage', Palette], ['Prise de son', MessageCircle], ['Direction artistique', Sparkles]].map(([label, Icon], index) => {
@@ -293,7 +311,7 @@ function Home() {
 
         <section className="contact-section section-pad" id="contact">
           <div className="container contact-grid">
-            <div className="contact-copy"><SectionEyebrow>05 / Contact</SectionEyebrow><h2>Un projet<br /><em>en tête ?</em></h2><p>Parlons de votre idée, de votre événement ou de votre prochaine histoire à raconter.</p><div className="contact-location"><MapPin size={17} /><span>Ouagadougou, Burkina Faso<br /><small>Disponible pour des projets locaux et à distance.</small></span></div></div>
+            <div className="contact-copy"><SectionEyebrow>06 / Contact</SectionEyebrow><h2>Un projet<br /><em>en tête ?</em></h2><p>Parlons de votre idée, de votre événement ou de votre prochaine histoire à raconter.</p><div className="contact-location"><MapPin size={17} /><span>Ouagadougou, Burkina Faso<br /><small>Disponible pour des projets locaux et à distance.</small></span></div></div>
             <div className="contact-cards">
               <a href="https://wa.me/2260425060" className="contact-card" target="_blank" rel="noreferrer"><MessageCircle size={20} /><span>WhatsApp</span><strong>+226 42 50 60</strong><ArrowUpRight size={16} /></a>
               <a href="tel:+2267594660" className="contact-card"><Phone size={20} /><span>Téléphone</span><strong>+226 75 94 66 0</strong><ArrowUpRight size={16} /></a>
@@ -304,6 +322,10 @@ function Home() {
           <div className="container contact-footer"><LogoMark compact /><div className="social-links"><a href="https://www.tiktok.com/@jk_prod1" target="_blank" rel="noreferrer">TikTok</a><a href="https://www.facebook.com/share/1cW8BnfyB3/" target="_blank" rel="noreferrer">Facebook</a><a href="mailto:jkprod226@gmail.com">Email</a></div><span className="copyright">© 2026 JK Prod — Jefferson KONE</span></div>
         </section>
       </main>
+
+      {showreelOpen && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label="Showreel JK Prod"><div className="showreel-panel"><button className="studio-close" onClick={() => setShowreelOpen(false)} aria-label="Fermer"><X size={20} /></button><div className="showreel-screen"><div><span className="reel-card-icon"><Play size={17} fill="currentColor" /></span><p>SHOWREEL / JK PROD</p><h2>Le regard<br /><em>en mouvement.</em></h2><span className="showreel-placeholder">Votre lien YouTube ou Vimeo sera intégré ici.</span></div></div><div className="showreel-footer"><span>Un montage court de vos meilleurs plans — 30 à 90 secondes recommandé.</span><button className="outline-button" onClick={() => { setShowreelOpen(false); setStudioOpen(true); }}>Ajouter le lien vidéo <ExternalLink size={15} /></button></div></div></div>}
+
+      {activeProject && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label={`Projet ${activeProject.title}`}><div className="project-detail-panel"><button className="studio-close" onClick={() => setActiveProject(null)} aria-label="Fermer"><X size={20} /></button><div className="project-detail-image"><img src={activeProject.image} alt="" /><span>{activeProject.year}</span></div><div className="project-detail-copy"><SectionEyebrow>{activeProject.category}</SectionEyebrow><h2>{activeProject.title}</h2><p className="project-role">{projectRoles[activeProject.category] || "Image · Montage · Direction artistique"}</p><p>{activeProject.description}</p><div className="project-detail-actions">{activeProject.videoUrl && activeProject.videoUrl !== "#" ? <a className="primary-button" href={activeProject.videoUrl} target="_blank" rel="noreferrer"><Play size={15} fill="currentColor" /> Voir la vidéo</a> : <button className="outline-button" onClick={() => { setActiveProject(null); setStudioOpen(true); }}>Ajouter le lien vidéo <ExternalLink size={15} /></button>}<span className="detail-note">Projet présenté par JK Prod</span></div></div></div></div>}
 
       {studioOpen && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label="Studio JK">
         <div className="studio-panel">

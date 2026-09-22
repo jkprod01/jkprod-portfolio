@@ -46,54 +46,49 @@ const projectRoles: Record<string, string> = {
 
 const starterProjects: Project[] = [
   {
-    id: "sonabel",
-    title: "Sonabel",
-    category: "Film institutionnel",
-    year: "Sélection",
-    description: "Une image précise et humaine au service d’une marque nationale.",
-    image:
-      "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=82",
-    videoUrl: "#",
-  },
-  {
-    id: "espaco",
-    title: "Espaco 2023",
-    category: "Captation live",
-    year: "2023",
-    description: "L’énergie d’une scène, le rythme d’un public, la mémoire d’un moment.",
-    image:
-      "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1200&q=82",
-    videoUrl: "#",
-  },
-  {
-    id: "resilience",
-    title: "Territoire de résilience",
-    category: "Documentaire",
-    year: "Sélection",
-    description: "Des regards vrais, captés au plus près du terrain.",
-    image:
-      "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=1200&q=82",
-    videoUrl: "#",
-  },
-  {
-    id: "sommet",
-    title: "Sommet des jeunes",
+    id: "nak-30-ans",
+    title: "30 ans du NAK",
     category: "Film événementiel",
-    year: "Sélection",
-    description: "Un montage vivant pour donner de l’élan aux idées qui rassemblent.",
-    image:
-      "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1200&q=82",
-    videoUrl: "#",
+    year: "2026",
+    description: "Une célébration populaire entre marché, culture, musique et transmission, captée au cœur des Nuits Atypiques de Koudougou.",
+    image: "/manus-storage/nak-30-ans_518e492e.jpg",
+    videoUrl: "/manus-storage/JK_PROD_NAK_ANNIVERSAIRE_CANON_REEL_60S_d32b7228.mp4",
   },
   {
-    id: "sidiki",
-    title: "Sidiki Diabaté",
-    category: "Clip officiel",
-    year: "Sélection",
-    description: "Une présence, une lumière, une narration musicale assumée.",
-    image:
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=82",
-    videoUrl: "#",
+    id: "ddk-concert",
+    title: "DDK — Concert live",
+    category: "Captation live",
+    year: "2026",
+    description: "Lumières, scène, artiste et foule : un résumé de concert construit autour de l’énergie du direct.",
+    image: "/manus-storage/ddk-concert_56771745.jpg",
+    videoUrl: "/manus-storage/JK_PROD_DDK_CONCERT_REEL_60S_da4d3d9b.mp4",
+  },
+  {
+    id: "mariage-ouedraogo",
+    title: "Mariage Ouedraogo",
+    category: "Film événementiel",
+    year: "2026",
+    description: "Un film sensible construit autour des préparatifs, des regards, des promesses et de la célébration.",
+    image: "/manus-storage/mariage-ouedraogo_dd58bb76.jpg",
+    videoUrl: "/manus-storage/JK_PROD_WEDDING_REEL_60S_3223951a.mp4",
+  },
+  {
+    id: "unijed",
+    title: "UNIJED Afrique",
+    category: "Film institutionnel",
+    year: "2026",
+    description: "Une capsule institutionnelle portée par la parole, l’identité de l’organisation et les enjeux de jeunesse et de développement.",
+    image: "/manus-storage/unijed_ffc92afa.jpg",
+    videoUrl: "/manus-storage/JK_PROD_UNIJED_WEB_30S_c84d9b19.mp4",
+  },
+  {
+    id: "nak-voeux",
+    title: "Vœux du NAK",
+    category: "Documentaire",
+    year: "2026",
+    description: "Une série de témoignages et de vœux qui donne une voix aux artistes, aux visiteurs et aux acteurs du festival.",
+    image: "/manus-storage/nak-voeux_4c35c988.jpg",
+    videoUrl: "/manus-storage/JK_PROD_NAK_ANNIVERSAIRE_CANON_REEL_60S_d32b7228.mp4",
   },
 ];
 
@@ -118,6 +113,8 @@ function SectionEyebrow({ children }: { children: string }) {
   return <p className="section-eyebrow"><span />{children}</p>;
 }
 
+const PROJECTS_STORAGE_KEY = "jkprod-projects-v2";
+
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [lightMode, setLightMode] = useState(false);
@@ -135,18 +132,18 @@ function Home() {
   });
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("jkprod-projects");
+    const saved = window.localStorage.getItem(PROJECTS_STORAGE_KEY);
     if (saved) {
       try {
         setProjects(JSON.parse(saved));
       } catch {
-        window.localStorage.removeItem("jkprod-projects");
+        window.localStorage.removeItem(PROJECTS_STORAGE_KEY);
       }
     }
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem("jkprod-projects", JSON.stringify(projects));
+    window.localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(projects));
   }, [projects]);
 
   const featuredProjects = useMemo(() => projects.slice(0, 5), [projects]);
@@ -325,7 +322,7 @@ function Home() {
 
       {showreelOpen && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label="Showreel JK Prod"><div className="showreel-panel"><button className="studio-close" onClick={() => setShowreelOpen(false)} aria-label="Fermer"><X size={20} /></button><div className="showreel-video-wrap"><video controls preload="metadata" playsInline src="/manus-storage/JK_PROD_NAK_ANNIVERSAIRE_CANON_REEL_60S_d32b7228.mp4" /></div><div className="showreel-footer"><span><strong>30 ans du NAK.</strong> Un aperçu de l’œil JK Prod — étalonné pour une lecture web.</span><button className="outline-button" onClick={() => { setShowreelOpen(false); setStudioOpen(true); }}>Remplacer le lien vidéo <ExternalLink size={15} /></button></div></div></div>}
 
-      {activeProject && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label={`Projet ${activeProject.title}`}><div className="project-detail-panel"><button className="studio-close" onClick={() => setActiveProject(null)} aria-label="Fermer"><X size={20} /></button><div className="project-detail-image"><img src={activeProject.image} alt="" /><span>{activeProject.year}</span></div><div className="project-detail-copy"><SectionEyebrow>{activeProject.category}</SectionEyebrow><h2>{activeProject.title}</h2><p className="project-role">{projectRoles[activeProject.category] || "Image · Montage · Direction artistique"}</p><p>{activeProject.description}</p><div className="project-detail-actions">{activeProject.videoUrl && activeProject.videoUrl !== "#" ? <a className="primary-button" href={activeProject.videoUrl} target="_blank" rel="noreferrer"><Play size={15} fill="currentColor" /> Voir la vidéo</a> : <button className="outline-button" onClick={() => { setActiveProject(null); setStudioOpen(true); }}>Ajouter le lien vidéo <ExternalLink size={15} /></button>}<span className="detail-note">Projet présenté par JK Prod</span></div></div></div></div>}
+      {activeProject && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label={`Projet ${activeProject.title}`}><div className="project-detail-panel"><button className="studio-close" onClick={() => setActiveProject(null)} aria-label="Fermer"><X size={20} /></button><div className="project-detail-image"><img src={activeProject.image} alt="" /><span>{activeProject.year}</span></div><div className="project-detail-copy"><SectionEyebrow>{activeProject.category}</SectionEyebrow><h2>{activeProject.title}</h2><p className="project-role">{projectRoles[activeProject.category] || "Image · Montage · Direction artistique"}</p><p>{activeProject.description}</p>{activeProject.videoUrl && activeProject.videoUrl.startsWith("/manus-storage/") && <div className="project-detail-video"><video controls preload="metadata" playsInline src={activeProject.videoUrl} /></div>}<div className="project-detail-actions">{activeProject.videoUrl && activeProject.videoUrl !== "#" ? (activeProject.videoUrl.startsWith("/manus-storage/") ? <span className="detail-note">Lecture directe — réalisation JK Prod</span> : <a className="primary-button" href={activeProject.videoUrl} target="_blank" rel="noreferrer"><Play size={15} fill="currentColor" /> Voir la vidéo</a>) : <button className="outline-button" onClick={() => { setActiveProject(null); setStudioOpen(true); }}>Ajouter le lien vidéo <ExternalLink size={15} /></button>}<span className="detail-note">Projet présenté par JK Prod</span></div></div></div></div>}
 
       {studioOpen && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label="Studio JK">
         <div className="studio-panel">

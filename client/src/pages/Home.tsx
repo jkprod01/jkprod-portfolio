@@ -34,6 +34,7 @@ type Project = {
   description: string;
   image: string;
   videoUrl: string;
+  detailImage?: string;
 };
 
 const projectRoles: Record<string, string> = {
@@ -71,6 +72,7 @@ const starterProjects: Project[] = [
     description: "Un film sensible construit autour des préparatifs, des regards, des promesses et de la célébration.",
     image: "/manus-storage/mariage-ouedraogo_dd58bb76.jpg",
     videoUrl: "/manus-storage/JK_PROD_WEDDING_REEL_60S_3223951a.mp4",
+    detailImage: "/manus-storage/wedding-rings-detail_081b1a89.jpg",
   },
   {
     id: "unijed",
@@ -272,7 +274,7 @@ function Home() {
         <section className="journey-section section-pad" id="parcours">
           <div className="container journey-grid">
             <div className="portrait-panel">
-              <div className="portrait-placeholder"><span>JK</span><small>JEFFERSON<br />KONE</small></div>
+              <div className="portrait-placeholder portrait-photo-slot"><span>PHOTO</span><small>Portrait professionnel<br />de Jefferson KONE<br /><em>à ajouter</em></small></div>
               <div className="portrait-caption"><span>Cadreur — Monteur</span><strong>Jefferson KONE</strong></div>
             </div>
             <div className="journey-copy">
@@ -322,7 +324,7 @@ function Home() {
 
       {showreelOpen && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label="Showreel JK Prod"><div className="showreel-panel"><button className="studio-close" onClick={() => setShowreelOpen(false)} aria-label="Fermer"><X size={20} /></button><div className="showreel-video-wrap"><video controls preload="metadata" playsInline src="/manus-storage/JK_PROD_NAK_ANNIVERSAIRE_CANON_REEL_60S_d32b7228.mp4" /></div><div className="showreel-footer"><span><strong>30 ans du NAK.</strong> Un aperçu de l’œil JK Prod — étalonné pour une lecture web.</span><button className="outline-button" onClick={() => { setShowreelOpen(false); setStudioOpen(true); }}>Remplacer le lien vidéo <ExternalLink size={15} /></button></div></div></div>}
 
-      {activeProject && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label={`Projet ${activeProject.title}`}><div className="project-detail-panel"><button className="studio-close" onClick={() => setActiveProject(null)} aria-label="Fermer"><X size={20} /></button><div className="project-detail-image"><img src={activeProject.image} alt="" /><span>{activeProject.year}</span></div><div className="project-detail-copy"><SectionEyebrow>{activeProject.category}</SectionEyebrow><h2>{activeProject.title}</h2><p className="project-role">{projectRoles[activeProject.category] || "Image · Montage · Direction artistique"}</p><p>{activeProject.description}</p>{activeProject.videoUrl && activeProject.videoUrl.startsWith("/manus-storage/") && <div className="project-detail-video"><video controls preload="metadata" playsInline src={activeProject.videoUrl} /></div>}<div className="project-detail-actions">{activeProject.videoUrl && activeProject.videoUrl !== "#" ? (activeProject.videoUrl.startsWith("/manus-storage/") ? <span className="detail-note">Lecture directe — réalisation JK Prod</span> : <a className="primary-button" href={activeProject.videoUrl} target="_blank" rel="noreferrer"><Play size={15} fill="currentColor" /> Voir la vidéo</a>) : <button className="outline-button" onClick={() => { setActiveProject(null); setStudioOpen(true); }}>Ajouter le lien vidéo <ExternalLink size={15} /></button>}<span className="detail-note">Projet présenté par JK Prod</span></div></div></div></div>}
+      {activeProject && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label={`Projet ${activeProject.title}`}><div className="project-detail-panel"><button className="studio-close" onClick={() => setActiveProject(null)} aria-label="Fermer"><X size={20} /></button><div className="project-detail-image"><img src={activeProject.image} alt="" /><span>{activeProject.year}</span></div><div className="project-detail-copy"><SectionEyebrow>{activeProject.category}</SectionEyebrow><h2>{activeProject.title}</h2><p className="project-role">{projectRoles[activeProject.category] || "Image · Montage · Direction artistique"}</p><p>{activeProject.description}</p>{activeProject.detailImage && <img className="project-detail-still" src={activeProject.detailImage} alt="Détail visuel du projet" />}{activeProject.videoUrl && activeProject.videoUrl.startsWith("/manus-storage/") && <div className="project-detail-video"><video controls preload="metadata" playsInline src={activeProject.videoUrl} /></div>}<div className="project-detail-actions">{activeProject.videoUrl && activeProject.videoUrl !== "#" ? (activeProject.videoUrl.startsWith("/manus-storage/") ? <span className="detail-note">Lecture directe — réalisation JK Prod</span> : <a className="primary-button" href={activeProject.videoUrl} target="_blank" rel="noreferrer"><Play size={15} fill="currentColor" /> Voir la vidéo</a>) : <button className="outline-button" onClick={() => { setActiveProject(null); setStudioOpen(true); }}>Ajouter le lien vidéo <ExternalLink size={15} /></button>}<span className="detail-note">Projet présenté par JK Prod</span></div></div></div></div>}
 
       {studioOpen && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label="Studio JK">
         <div className="studio-panel">

@@ -286,7 +286,7 @@ function Home() {
                 <div className="timeline-item"><span>02</span><div><strong>We Are Group</strong><small>Assistant cadreur — monteur</small></div><time>Expérience</time></div>
                 <div className="timeline-item timeline-item--active"><span>03</span><div><strong>Freelance / JK Prod</strong><small>Cadreur — monteur indépendant</small></div><time>Aujourd’hui</time></div>
               </div>
-              <a className="outline-button" href="/manus-storage/main_c82a976b.pdf" target="_blank" rel="noreferrer" download="CV-Jefferson-KONE.pdf"><Download size={16} /> Télécharger mon CV</a>
+              <div className="cv-downloads"><a className="outline-button" href="/manus-storage/CV-Jefferson-KONE-ATS-Audiovisuel_28efbaa6.pdf" target="_blank" rel="noreferrer" download="CV-Jefferson-KONE-ATS-Audiovisuel.pdf"><Download size={16} /> CV ATS audiovisuel</a><a className="text-link" href="/manus-storage/main_c82a976b.pdf" target="_blank" rel="noreferrer" download="CV-Jefferson-KONE.pdf">CV portfolio visuel <ExternalLink size={15} /></a></div>
             </div>
           </div>
         </section>

@@ -286,7 +286,7 @@ function Home() {
                 <div className="timeline-item"><span>02</span><div><strong>We Are Group</strong><small>Assistant cadreur — monteur</small></div><time>Expérience</time></div>
                 <div className="timeline-item timeline-item--active"><span>03</span><div><strong>Freelance / JK Prod</strong><small>Cadreur — monteur indépendant</small></div><time>Aujourd’hui</time></div>
               </div>
-              <button className="outline-button" onClick={() => window.alert("Le CV PDF sera ajouté dès que le contenu final sera validé.")}><Download size={16} /> Télécharger mon CV</button>
+              <a className="outline-button" href="/manus-storage/main_c82a976b.pdf" target="_blank" rel="noreferrer" download="CV-Jefferson-KONE.pdf"><Download size={16} /> Télécharger mon CV</a>
             </div>
           </div>
         </section>

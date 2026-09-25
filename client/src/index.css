@@ -234,6 +234,7 @@ a { color: inherit; text-decoration: none; }
 .showreel-placeholder { display: block; color: var(--muted); font-size: 11px; margin-top: 24px; }
 .showreel-footer { display: flex; justify-content: space-between; align-items: center; gap: 22px; padding: 20px 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; line-height: 1.5; }
 .showreel-footer .outline-button { flex: 0 0 auto; }
+.showreel-links { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; flex: 0 0 auto; }
 .project-detail-panel { display: grid; grid-template-columns: 1fr 1fr; }
 .project-detail-image { min-height: 440px; position: relative; overflow: hidden; }
 .project-detail-image img { width: 100%; height: 100%; object-fit: cover; opacity: .75; filter: saturate(.8); }

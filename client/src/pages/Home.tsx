@@ -47,50 +47,50 @@ const projectRoles: Record<string, string> = {
 
 const starterProjects: Project[] = [
   {
-    id: "nak-30-ans",
-    title: "30 ans du NAK",
-    category: "Film événementiel",
+    id: "lumafest-2",
+    title: "LUMAFEST 2",
+    category: "Captation live",
     year: "2026",
-    description: "Une célébration populaire entre marché, culture, musique et transmission, captée au cœur des Nuits Atypiques de Koudougou.",
-    image: "/manus-storage/nak-30-ans_518e492e.jpg",
-    videoUrl: "/manus-storage/JK_PROD_NAK_ANNIVERSAIRE_CANON_REEL_60S_d32b7228.mp4",
+    description: "Une immersion événementielle qui transforme l’énergie du public, les artistes et les lumières en film vivant — pensé pour donner envie de vivre l’événement.",
+    image: "/manus-storage/JK_PROD_LUMAFEST2_POSTER_7ebb4c1c.jpg",
+    videoUrl: "/manus-storage/JK_PROD_LUMAFEST2_REC709_WEB_575a3f82.mp4",
   },
   {
     id: "ddk-concert",
     title: "DDK — Concert live",
     category: "Captation live",
     year: "2026",
-    description: "Lumières, scène, artiste et foule : un résumé de concert construit autour de l’énergie du direct.",
-    image: "/manus-storage/ddk-concert_56771745.jpg",
-    videoUrl: "/manus-storage/JK_PROD_DDK_CONCERT_REEL_60S_da4d3d9b.mp4",
-  },
-  {
-    id: "mariage-ouedraogo",
-    title: "Mariage Ouedraogo",
-    category: "Film événementiel",
-    year: "2026",
-    description: "Un film sensible construit autour des préparatifs, des regards, des promesses et de la célébration.",
-    image: "/manus-storage/mariage-ouedraogo_dd58bb76.jpg",
-    videoUrl: "/manus-storage/JK_PROD_WEDDING_REEL_60S_3223951a.mp4",
-    detailImage: "/manus-storage/wedding-rings-detail_081b1a89.jpg",
+    description: "Une captation rythmée qui restitue la puissance de la scène, la lumière et la connexion entre l’artiste et son public.",
+    image: "/manus-storage/DDK-concert-best_8f6ae001.jpg",
+    videoUrl: "/manus-storage/JK_PROD_DDK_CONCERT_REEL_60S_REC709_7add4d68.mp4",
   },
   {
     id: "unijed",
     title: "UNIJED Afrique",
     category: "Film institutionnel",
     year: "2026",
-    description: "Une capsule institutionnelle portée par la parole, l’identité de l’organisation et les enjeux de jeunesse et de développement.",
-    image: "/manus-storage/unijed_ffc92afa.jpg",
-    videoUrl: "/manus-storage/JK_PROD_UNIJED_WEB_30S_c84d9b19.mp4",
+    description: "Un film institutionnel clair et humain pour faire comprendre une mission, valoriser une organisation et créer la confiance.",
+    image: "/manus-storage/unijed-best_e8423e2f.jpg",
+    videoUrl: "/manus-storage/JK_PROD_UNIJED_WEB_30S_REC709_9c189881.mp4",
   },
   {
-    id: "nak-voeux",
-    title: "Vœux du NAK",
-    category: "Documentaire",
+    id: "mariage-ouedraogo",
+    title: "Mariage Ouedraogo",
+    category: "Film événementiel",
     year: "2026",
-    description: "Une série de témoignages et de vœux qui donne une voix aux artistes, aux visiteurs et aux acteurs du festival.",
-    image: "/manus-storage/nak-voeux_4c35c988.jpg",
-    videoUrl: "/manus-storage/JK_PROD_NAK_ANNIVERSAIRE_CANON_REEL_60S_d32b7228.mp4",
+    description: "Un film émotionnel construit sur les regards, les détails et les instants forts pour conserver l’intensité d’une journée unique.",
+    image: "/manus-storage/mariage-ouedraogo-best_c9855ef8.jpg",
+    videoUrl: "/manus-storage/JK_PROD_WEDDING_REEL_60S_REC709_aacbbf67.mp4",
+    detailImage: "/manus-storage/wedding-rings-detail_081b1a89.jpg",
+  },
+  {
+    id: "nak-30-ans",
+    title: "30 ans du NAK",
+    category: "Film événementiel",
+    year: "2026",
+    description: "Un récit de festival qui mêle culture, public et transmission pour donner à une identité locale une image forte et mémorable.",
+    image: "/manus-storage/nak-30-ans-best_7440ca94.jpg",
+    videoUrl: "/manus-storage/JK_PROD_NAK_ANNIVERSAIRE_CANON_REEL_60S_REC709_ee814bb6.mp4",
   },
 ];
 
@@ -137,7 +137,11 @@ function Home() {
     const saved = window.localStorage.getItem(PROJECTS_STORAGE_KEY);
     if (saved) {
       try {
-        setProjects(JSON.parse(saved));
+        const savedProjects = JSON.parse(saved) as Project[];
+        const starterById = new Map(starterProjects.map((starter) => [starter.id, starter]));
+        const updatedSavedProjects = savedProjects.map((savedProject) => starterById.get(savedProject.id) ? { ...savedProject, ...starterById.get(savedProject.id) } : savedProject);
+        const missingStarterProjects = starterProjects.filter((starter) => !updatedSavedProjects.some((savedProject) => savedProject.id === starter.id));
+        setProjects([...updatedSavedProjects, ...missingStarterProjects]);
       } catch {
         window.localStorage.removeItem(PROJECTS_STORAGE_KEY);
       }
@@ -148,7 +152,11 @@ function Home() {
     window.localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(projects));
   }, [projects]);
 
-  const featuredProjects = useMemo(() => projects.slice(0, 5), [projects]);
+  const featuredProjects = useMemo(() => {
+    const lumafest = projects.find((project) => project.id === "lumafest-2");
+    if (!lumafest) return projects.slice(0, 5);
+    return [lumafest, ...projects.filter((project) => project.id !== "lumafest-2")].slice(0, 5);
+  }, [projects]);
 
   function scrollTo(id: string) {
     setMenuOpen(false);
@@ -273,9 +281,10 @@ function Home() {
 
         <section className="journey-section section-pad" id="parcours">
           <div className="container journey-grid">
-            <div className="portrait-panel">
-              <div className="portrait-placeholder portrait-photo-slot"><span>PHOTO</span><small>Portrait professionnel<br />de Jefferson KONE<br /><em>à ajouter</em></small></div>
-              <div className="portrait-caption"><span>Cadreur — Monteur</span><strong>Jefferson KONE</strong></div>
+            <div className="portrait-panel about-photo-collage">
+              <figure className="about-photo about-photo--portrait"><img src="/manus-storage/jefferson-portrait-highres_b22534a5.webp" alt="Portrait de Jefferson KONE avec sa caméra et son stabilisateur" /><figcaption><span>01 / IDENTITÉ</span><strong>Le regard avant l’image.</strong></figcaption></figure>
+              <figure className="about-photo about-photo--field"><img src="/manus-storage/jefferson-field-retouched_a9bff046.webp" alt="Jefferson KONE en tournage extérieur avec un stabilisateur" /><figcaption><span>02 / TERRAIN</span><strong>La maîtrise en mouvement.</strong></figcaption></figure>
+              <div className="about-photo-signature"><span>JK PROD</span><small>CADREUR · MONTEUR · VIDÉASTE</small></div>
             </div>
             <div className="journey-copy">
               <SectionEyebrow>04 / Parcours</SectionEyebrow>
@@ -322,7 +331,7 @@ function Home() {
         </section>
       </main>
 
-      {showreelOpen && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label="Showreel JK Prod"><div className="showreel-panel"><button className="studio-close" onClick={() => setShowreelOpen(false)} aria-label="Fermer"><X size={20} /></button><div className="showreel-video-wrap"><video controls preload="metadata" playsInline src="/manus-storage/JK_PROD_SHORT_REEL_SITE_45S_59c7062b.mp4" /></div><div className="showreel-footer"><span><strong>Short reel JK Prod.</strong> Coulisses de tournage, événements, portraits et films finis — un aperçu de votre regard de cadreur-monteur.</span><div className="showreel-links"><a className="text-link" href="/manus-storage/JK_PROD_SHORT_REEL_VERTICAL_45S_77e36158.mp4" target="_blank" rel="noreferrer" download="JK-PROD-SHORT-REEL-VERTICAL-45S.mp4">Version verticale réseaux <ExternalLink size={15} /></a><button className="outline-button" onClick={() => { setShowreelOpen(false); setStudioOpen(true); }}>Remplacer le lien vidéo <ExternalLink size={15} /></button></div></div></div></div>}
+      {showreelOpen && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label="Showreel JK Prod"><div className="showreel-panel"><button className="studio-close" onClick={() => setShowreelOpen(false)} aria-label="Fermer"><X size={20} /></button><div className="showreel-video-wrap"><video controls preload="metadata" playsInline src="/manus-storage/JK_PROD_REEL_DYNAMIQUE_SITE_45S_53428281.mp4" /></div><div className="showreel-footer"><span><strong>JK Prod — dynamique, précis, prêt à raconter.</strong> Coulisses de tournage, résultats finis, habillage et appel à l’action pour donner envie de vous contacter.</span><div className="showreel-links"><a className="text-link" href="/manus-storage/JK_PROD_REEL_DYNAMIQUE_VERTICAL_45S_ef79a0db.mp4" target="_blank" rel="noreferrer" download="JK-PROD-REEL-DYNAMIQUE-VERTICAL-45S.mp4">Version verticale réseaux <ExternalLink size={15} /></a><button className="outline-button" onClick={() => { setShowreelOpen(false); scrollTo("contact"); }}>Parlons de votre projet <ArrowUpRight size={15} /></button></div></div></div></div>}
 
       {activeProject && <div className="studio-backdrop" role="dialog" aria-modal="true" aria-label={`Projet ${activeProject.title}`}><div className="project-detail-panel"><button className="studio-close" onClick={() => setActiveProject(null)} aria-label="Fermer"><X size={20} /></button><div className="project-detail-image"><img src={activeProject.image} alt="" /><span>{activeProject.year}</span></div><div className="project-detail-copy"><SectionEyebrow>{activeProject.category}</SectionEyebrow><h2>{activeProject.title}</h2><p className="project-role">{projectRoles[activeProject.category] || "Image · Montage · Direction artistique"}</p><p>{activeProject.description}</p>{activeProject.detailImage && <img className="project-detail-still" src={activeProject.detailImage} alt="Détail visuel du projet" />}{activeProject.videoUrl && activeProject.videoUrl.startsWith("/manus-storage/") && <div className="project-detail-video"><video controls preload="metadata" playsInline src={activeProject.videoUrl} /></div>}<div className="project-detail-actions">{activeProject.videoUrl && activeProject.videoUrl !== "#" ? (activeProject.videoUrl.startsWith("/manus-storage/") ? <span className="detail-note">Lecture directe — réalisation JK Prod</span> : <a className="primary-button" href={activeProject.videoUrl} target="_blank" rel="noreferrer"><Play size={15} fill="currentColor" /> Voir la vidéo</a>) : <button className="outline-button" onClick={() => { setActiveProject(null); setStudioOpen(true); }}>Ajouter le lien vidéo <ExternalLink size={15} /></button>}<span className="detail-note">Projet présenté par JK Prod</span></div></div></div></div>}
 

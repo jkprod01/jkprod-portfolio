@@ -157,6 +157,21 @@ a { color: inherit; text-decoration: none; }
 .portrait-caption { position: absolute; z-index: 2; bottom: 27px; left: 30px; display: flex; flex-direction: column; gap: 7px; }
 .portrait-caption span { font-size: 9px; text-transform: uppercase; color: var(--gold-light); letter-spacing: .12em; }
 .portrait-caption strong { font-family: var(--font-display); font-size: 26px; text-transform: uppercase; }
+.about-photo-collage { display: grid; grid-template-columns: 1.05fr .78fr; grid-template-rows: 1fr .72fr; gap: 12px; padding: 18px; background: #111312; }
+.about-photo-collage::before { z-index: 0; }
+.about-photo { position: relative; z-index: 1; overflow: hidden; margin: 0; border: 1px solid rgba(242,240,233,.16); background: #1a1c1b; box-shadow: 12px 15px 0 rgba(212,170,66,.08); }
+.about-photo img { width: 100%; height: 100%; object-fit: contain; display: block; background: #080909; filter: saturate(.95) contrast(1.04); transition: transform .45s ease, filter .45s ease; }
+.about-photo:hover img { transform: scale(1.035); filter: saturate(1.08) contrast(1.06); }
+.about-photo--portrait { grid-row: 1 / span 2; }
+.about-photo--portrait img { object-position: center 35%; filter: grayscale(1) contrast(1.08); }
+.about-photo--portrait:hover img { filter: grayscale(.8) contrast(1.08); }
+.about-photo--field img { object-position: center 42%; }
+.about-photo figcaption { position: absolute; inset: auto 0 0; padding: 18px 14px 13px; background: linear-gradient(transparent, rgba(0,0,0,.86)); display: flex; flex-direction: column; gap: 4px; }
+.about-photo figcaption span { color: var(--gold-light); font-size: 8px; letter-spacing: .15em; }
+.about-photo figcaption strong { font-family: var(--font-display); font-size: 16px; text-transform: uppercase; letter-spacing: .02em; }
+.about-photo-signature { position: absolute; z-index: 2; right: 24px; top: 25px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; color: var(--paper); text-shadow: 0 2px 10px rgba(0,0,0,.7); }
+.about-photo-signature span { color: var(--gold-light); font-family: var(--font-display); font-size: 24px; font-weight: 800; }
+.about-photo-signature small { font-size: 7px; letter-spacing: .15em; }
 .journey-copy .section-eyebrow { margin-bottom: 25px; }
 .lead-copy { color: var(--muted); line-height: 1.7; max-width: 465px; font-size: 13px; margin: 30px 0 34px; }
 .timeline { border-top: 1px solid var(--line); margin-bottom: 34px; }
@@ -309,6 +324,10 @@ a { color: inherit; text-decoration: none; }
   .statement-copy p { font-size: 31px; }
   .statement-icon { display: none; }
   .portrait-panel { min-height: 420px; }
+  .about-photo-collage { min-height: 420px; padding: 12px; gap: 8px; }
+  .about-photo figcaption { padding: 14px 10px 10px; }
+  .about-photo figcaption strong { font-size: 13px; }
+  .about-photo-signature { right: 17px; top: 18px; }
   .skills-layout { grid-template-columns: 1fr; gap: 44px; }
   .tool-stack { border-left: 0; border-top: 1px solid var(--line); padding: 28px 0 0; }
   .skill-row { grid-template-columns: 23px 1.3fr 1fr 35px; gap: 8px; font-size: 10px; }

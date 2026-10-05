@@ -322,7 +322,7 @@ function Home() {
           <div className="container contact-grid">
             <div className="contact-copy"><SectionEyebrow>06 / Contact</SectionEyebrow><h2>Un projet<br /><em>en tête ?</em></h2><p>Parlons de votre idée, de votre événement ou de votre prochaine histoire à raconter.</p><div className="contact-location"><MapPin size={17} /><span>Ouagadougou, Burkina Faso<br /><small>Disponible pour des projets locaux et à distance.</small></span></div></div>
             <div className="contact-cards">
-              <a href="https://wa.me/2260425060" className="contact-card" target="_blank" rel="noreferrer"><MessageCircle size={20} /><span>WhatsApp</span><strong>+226 42 50 60</strong><ArrowUpRight size={16} /></a>
+              <a href="https://wa.me/22660425060" className="contact-card" target="_blank" rel="noreferrer"><MessageCircle size={20} /><span>WhatsApp</span><strong>+226 60 42 50 60</strong><ArrowUpRight size={16} /></a>
               <a href="tel:+2267594660" className="contact-card"><Phone size={20} /><span>Téléphone</span><strong>+226 75 94 66 0</strong><ArrowUpRight size={16} /></a>
               <a href="mailto:jkprod226@gmail.com" className="contact-card"><Mail size={20} /><span>Email</span><strong>jkprod226@gmail.com</strong><ArrowUpRight size={16} /></a>
               <a href="https://www.tiktok.com/@jk_prod1" className="contact-card" target="_blank" rel="noreferrer"><span className="social-letter">Tk</span><span>TikTok</span><strong>@jk_prod1</strong><ArrowUpRight size={16} /></a>

@@ -275,6 +275,7 @@ function Home() {
         <section className="about-section section-pad" id="a-propos">
           <div className="container about-grid">
             <div className="about-label"><SectionEyebrow>03 / À propos</SectionEyebrow><span className="about-stamp">JK<br /><small>PROD</small></span></div>
+            <figure className="about-main-portrait"><img src="/manus-storage/jefferson-portrait-highres_b22534a5.webp" alt="Jefferson KONE, cadreur-monteur et vidéaste" /><figcaption><span>JEFFERSON KONE</span><strong>Le regard derrière la caméra.</strong></figcaption></figure>
             <div className="about-content"><h2>L’image comme<br /><em>langage.</em></h2><p className="about-lead">Je m’appelle <strong>Jefferson KONE</strong>, cadreur-monteur et vidéaste basé à Ouagadougou, au Burkina Faso.</p><p>Passionné par l’image et la narration audiovisuelle, je transforme les idées, les événements et les histoires en contenus visuels vivants, précis et mémorables.</p><p>Mon expérience chez Showtools Experience Burkina et We Are Group m’a permis de participer à des films institutionnels, des captations d’événements, des documentaires, des clips et des contenus de communication.</p><blockquote>Une image forte.<br /><strong>Un montage précis. Une histoire qui reste.</strong></blockquote><button className="text-link" onClick={() => scrollTo("contact")}>Travaillons ensemble <ArrowUpRight size={16} /></button></div>
           </div>
         </section>
